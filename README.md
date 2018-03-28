@@ -29,7 +29,7 @@ also required:
 
 ### Installation from ZIP file
 
-Download a zip file from the Github [project page](https://github.com/kernco/deg-pipeline/archive/master.zip) and unzip it in
+Download a zip file from the Github [project page](https://github.com/kernco/deg_pipeline/archive/master.zip) and unzip it in
 the desired location.
 
 ### Installation using git
