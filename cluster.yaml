@@ -1,0 +1,15 @@
+__default__:
+  partition: high
+  nodes: 1
+  cpus: "{threads}"
+  name: "{rule}.{wildcards}"
+  output: "Logs/{rule}.{wildcards}.out"
+  time: "1-0"
+
+
+star_index:
+  partition: bigmemh
+
+star_align:
+  partition: bigmemh
+

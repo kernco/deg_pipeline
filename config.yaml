@@ -1,0 +1,11 @@
+genome: /Path/To/genome.fa
+annotation: /Path/To/annotation.gtf
+mapq: 30
+threads: 24
+factors:
+  tissue: [Liver, Muscle]
+  line: [Fayoumi, Leghorn]
+  condition: [Control, Infected]
+comparisons:
+  - [Infected, Control]
+  - [Fayoumi, Leghorn]
