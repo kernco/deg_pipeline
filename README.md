@@ -134,11 +134,14 @@ look like
 ```
 The Infected-Control comparison will create 4 sets of differentially expressed
 genes:
+
     - Layer Liver Infected vs. Layer Liver Control
     - Layer Muscle Infected vs. Layer Muscle Control
     - Broiler Liver Infected vs. Broiler Liver Control
     - Broiler Muscle Infected vs. Broiler Muscle Control
+
 The Layer-Broiler comparison will create another 4 sets:
+
     - Layer Liver Control vs. Broiler Liver Control
     - Layer Muscle Control vs. Broiler Muscle Control
     - Layer Liver Infected vs. Broiler Liver Infected
@@ -169,8 +172,9 @@ the above command. If you are running the pipeline using Conda, add '--use-conda
 to the command.
 
 Snakemake executes as many tasks in parallel as possible. To limit the number
-of tasks being run at the same time, add the '-j' option, e.g. '-j 8' to only
-run 8 jobs at a time.
+of tasks being run at the same time, add the '-j' option, e.g. '-j 8'. This limits
+the number of CPUs being used by Snakemake tasks to 8. If running in cluster
+mode (see below), this limits the number of simultaneous jobs to 8.
 
 If you are using a computing cluster, there is a way to run
 the pipeline so that every task is submitted as a separate job to the cluster's
