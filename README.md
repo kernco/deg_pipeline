@@ -135,17 +135,17 @@ look like
 The Infected-Control comparison will create 4 sets of differentially expressed
 genes:
 
-    - Layer Liver Infected vs. Layer Liver Control
-    - Layer Muscle Infected vs. Layer Muscle Control
-    - Broiler Liver Infected vs. Broiler Liver Control
-    - Broiler Muscle Infected vs. Broiler Muscle Control
+- Layer Liver Infected vs. Layer Liver Control
+- Layer Muscle Infected vs. Layer Muscle Control
+- Broiler Liver Infected vs. Broiler Liver Control
+- Broiler Muscle Infected vs. Broiler Muscle Control
 
 The Layer-Broiler comparison will create another 4 sets:
 
-    - Layer Liver Control vs. Broiler Liver Control
-    - Layer Muscle Control vs. Broiler Muscle Control
-    - Layer Liver Infected vs. Broiler Liver Infected
-    - Layer Muscle Infected vs. Broiler Muscle Infected
+- Layer Liver Control vs. Broiler Liver Control
+- Layer Muscle Control vs. Broiler Muscle Control
+- Layer Liver Infected vs. Broiler Liver Infected
+- Layer Muscle Infected vs. Broiler Muscle Infected
 
 Note that DESeq2 is not run with a multifactor
 design, rather these are just used to group the samples.
