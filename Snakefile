@@ -29,10 +29,26 @@ def deseq_inputs(wildcards):
             inputs['control'] = 'Groups/' + '_'.join(group) + '.txt'
     return inputs
 
+def all_star(wildcards):
+    for f in RAW_FILES:
+        yield 'STAR_Output/{}_Aligned.sortedByCoord.out.bam'.format(f)
+
+def all_htseq(wildcards):
+    for f in RAW_FILES:
+        yield 'HTSeq/{}.txt'.format(f)
+
 
 rule all:
     input:
         comparisons
+
+rule align_all:
+    input:
+        all_star 
+
+rule gene_counts:
+    input:
+        all_htseq
         
 rule star_index:
     input: 
@@ -42,9 +58,9 @@ rule star_index:
         'Genome_Index/chrName.txt'
     conda:
         'env.yaml'
-    threads: config['threads']
+    threads: 24#config['threads']
     shell: 
-        'mkdir -p Genome_Index STAR --runThreadN {threads} --runMode genomeGenerate --genomeDir Genome_Index --genomeFastaFiles {input.genome} --sjdbGTFfile {input.gtf}'
+        'mkdir -p Genome_Index && STAR --runThreadN {threads} --runMode genomeGenerate --genomeDir Genome_Index --genomeFastaFiles {input.genome} --sjdbGTFfile {input.gtf}'
 
 rule trim_paired_reads:
     input: 
@@ -67,9 +83,9 @@ rule star_align:
         'STAR_Output/{library}_Aligned.sortedByCoord.out.bam'
     conda:
         'env.yaml'
-    threads: config['threads']
+    threads:24# config['threads']
     shell: 
-        'STAR --runThreadN {threads} --genomeDir Genome_Index --readFilesIn {input.r1} {input.r2} --readFilesCommand zcat --outFileNamePrefix STAR_Output/{wildcards.library}_ --outFilterType BySJout --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --alignIntronMin 20 --outSAMtype BAM SortedByCoordinate'
+        'STAR --runThreadN {threads} --genomeDir Genome_Index --readFilesIn {input.r1} {input.r2} --readFilesCommand zcat --outFileNamePrefix STAR_Output/{wildcards.library}_ --outFilterType BySJout --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --alignIntronMin 20 --outSAMtype BAM SortedByCoordinate --outReadsUnmapped Fastx'
 
 rule filter_star:
     input: 
@@ -89,7 +105,7 @@ rule make_alignment_report:
         csv = 'Alignment_Summary.csv'
     params: 
         libraries = lambda wildcards: expand('{library}', library=RAW_FILES)
-    threads: config['threads']
+    threads: 12#config['threads']
     script: 
         'Make_Alignment_Summary.py'
 
@@ -101,7 +117,7 @@ rule htseq_count:
     conda:
         'env.yaml'
     shell:
-        'htseq-count -f bam --stranded=reverse {input} {config[annotation]} > {output}'
+        'htseq-count -f bam -r pos --stranded=reverse {input} {config[annotation]} > {output}'
 
 rule make_group_files:
     input:
@@ -128,7 +144,7 @@ rule deseq:
     input:
         unpack(deseq_inputs)
     output:
-        'DESeq/{condition}_vs_{control}_{fixed}.tsv'
+        deg='DESeq/{condition}_vs_{control}_{fixed}.tsv'
     wildcard_constraints:
         control = "[^_]+"
     conda:
